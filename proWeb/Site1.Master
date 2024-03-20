@@ -14,7 +14,7 @@
         <div>
             <p>Daniel Gómez Nueda - 54204661D, Triana Jiménez Molina - 50510944T</p>
             <h1 align="center" style="background-color: deepskyblue; color:white">HADA P3 - CURSO 2023-24</h1>
-
+    
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
         </div>
