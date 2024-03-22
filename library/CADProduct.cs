@@ -25,7 +25,7 @@ namespace library
                 conn = new SqlConnection(constring);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(comando, conn);
-                comando.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
                 done = true;
                 conn.Close();
             }
@@ -42,9 +42,9 @@ namespace library
             finally
             {
                 if (conn != null) conn.Close();
-                return done;
-
+            
             }
+            return done;
         }
 
     }
