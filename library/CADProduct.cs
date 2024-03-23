@@ -47,7 +47,7 @@ namespace library
             return done;
         }
 
-    }
+    
 
         public bool Update(ENProduct en)
         {
@@ -56,6 +56,31 @@ namespace library
 
         public bool Delete(ENProduct en)
         {
+            SqlConnection conn = null;
+            
+            String comando = "Delete from Product where name= "+en.Name;
+            try
+            {
+                conn = new SqlConnection(constring);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comando, conn);
+
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (SqlException sqlex)
+            {
+                throw new CADException("Error deleting a product: " + en.Name, sqlex );
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
 
         }
 
