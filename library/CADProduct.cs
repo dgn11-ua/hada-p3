@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace library
 {
@@ -86,6 +87,29 @@ namespace library
 
         public bool Read(ENProduct en)
         {
+            SqlConnection conn = null;
+            DataSet dsProduct = null;
+            string comando = "Select * from Product where name= " + en.Name;
+            try
+            {
+                conn = new SqlConnection(constring);
+                SqlDataAdapter sqlAdaptador = new SqlDataAdapter(comando, conn);
+                dsProduct = new DataSet();
+                sqlAdaptador.Fill(dsProduct);
+                return dsProduct;
+            }
+            catch(SqlException sqlex)
+            {
+                throw new CADException("Error reading a product: " + en.Name, sqlex);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
 
         }
 
