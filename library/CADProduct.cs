@@ -143,37 +143,33 @@ namespace library
 
         public bool ReadNext(ENProduct en)
         {
-            public bool ReadNext(ENProduct en)
+            SqlConnection conn = null;
+            DataSet dsProduct = null;
+
+            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID > " + en.ProductID + " ORDER BY ProductID ASC";
+
+            try
             {
-                SqlConnection conn = null;
-                DataSet dsProduct = null;
-
-                string comando = "SELECT TOP 1 * FROM Product WHERE ProductID > " + en.ProductID + " ORDER BY ProductID ASC";
-
-                try
-                {
-                    conn = new SqlConnection(constring);
-                    SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
-                    dsProduct = new DataSet();
-                    sqlAdapter.Fill(dsProduct);
-                    return dsProduct;
-                }
-                catch (SqlException sqlex)
-                {
-                    throw new CADException("Error reading the next product after: " + en.Name, sqlex);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    if (conn != null) conn.Close();
-                }
+                conn = new SqlConnection(constring);
+                SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
+                dsProduct = new DataSet();
+                sqlAdapter.Fill(dsProduct);
+                return dsProduct;
             }
-
-
+            catch (SqlException sqlex)
+            {
+                throw new CADException("Error reading the next product after: " + en.Name, sqlex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
         }
+
         public bool ReadPrev(ENProduct en)
         {
             SqlConnection conn = null;
