@@ -43,12 +43,12 @@ namespace library
             finally
             {
                 if (conn != null) conn.Close();
-            
+
             }
             return done;
         }
 
-    
+
 
         public bool Update(ENProduct en)
         {
@@ -58,8 +58,8 @@ namespace library
         public bool Delete(ENProduct en)
         {
             SqlConnection conn = null;
-            
-            String comando = "Delete from Product where name= "+en.Name;
+
+            String comando = "Delete from Product where name= " + en.Name;
             try
             {
                 conn = new SqlConnection(constring);
@@ -71,11 +71,11 @@ namespace library
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error deleting a product: " + en.Name, sqlex );
+                throw new CADException("Error deleting a product: " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
-                
+
                 throw ex;
             }
             finally
@@ -98,11 +98,11 @@ namespace library
                 sqlAdaptador.Fill(dsProduct);
                 return dsProduct;
             }
-            catch(SqlException sqlex)
+            catch (SqlException sqlex)
             {
                 throw new CADException("Error reading a product: " + en.Name, sqlex);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -115,17 +115,93 @@ namespace library
 
         public bool ReadFirst(ENProduct en)
         {
+            SqlConnection conn = null;
+            DataSet dsProduct = null;
+            string comando = "SELECT TOP 1 * FROM Product WHERE name = '" + en.Name + "' ORDER BY ProductID";
+            try
+            {
+                conn = new SqlConnection(constring);
+                SqlDataAdapter sqlAdaptador = new SqlDataAdapter(comando, conn);
+                dsProduct = new DataSet();
+                sqlAdaptador.Fill(dsProduct);
+                return dsProduct;
+            }
+            catch (SqlException sqlex)
+            {
+                throw new CADException("Error reading a product: " + en.Name, sqlex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
 
         }
 
         public bool ReadNext(ENProduct en)
         {
+            public bool ReadNext(ENProduct en)
+            {
+                SqlConnection conn = null;
+                DataSet dsProduct = null;
+
+                string comando = "SELECT TOP 1 * FROM Product WHERE ProductID > " + en.ProductID + " ORDER BY ProductID ASC";
+
+                try
+                {
+                    conn = new SqlConnection(constring);
+                    SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
+                    dsProduct = new DataSet();
+                    sqlAdapter.Fill(dsProduct);
+                    return dsProduct;
+                }
+                catch (SqlException sqlex)
+                {
+                    throw new CADException("Error reading the next product after: " + en.Name, sqlex);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    if (conn != null) conn.Close();
+                }
+            }
+
 
         }
-
         public bool ReadPrev(ENProduct en)
         {
+            SqlConnection conn = null;
+            DataSet dsProduct = null;
 
+            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID < " + en.ProductID + " ORDER BY ProductID DESC";
+
+            try
+            {
+                conn = new SqlConnection(constring);
+                SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
+                dsProduct = new DataSet();
+                sqlAdapter.Fill(dsProduct);
+                return dsProduct;
+            }
+            catch (SqlException sqlex)
+            {
+                throw new CADException("Error reading the previous product to: " + en.Name, sqlex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
         }
+
     }
 }
