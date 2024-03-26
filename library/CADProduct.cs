@@ -122,8 +122,12 @@ namespace library
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(comando, conn);
 
+                int rowsAffected = cmd.ExecuteNonQuery();
 
-                cmd.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                    return true;
+                else
+                    return false;
             }
             catch (SqlException sqlex)
             {
