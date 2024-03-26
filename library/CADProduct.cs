@@ -10,6 +10,25 @@ namespace library
 {
     public class CADProduct
     {
+        
+        public class CADException : Exception
+        {
+            public CADException()
+            {
+            }
+
+            public CADException(string message)
+                : base(message)
+            {
+            }
+
+            public CADException(string message, Exception inner)
+                : base(message, inner)
+            {
+            }
+        }
+    
+
         private String constring;
         public CADProduct()
         {
@@ -47,7 +66,6 @@ namespace library
             }
             return done;
         }
-
 
 
         public bool Update(ENProduct en)
@@ -153,7 +171,7 @@ namespace library
 
 
 
-        public bool ReadFirst(ENProduct en)
+        public DataSet ReadFirst(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
@@ -178,21 +196,21 @@ namespace library
             {
                 if (conn != null) conn.Close();
             }
-
         }
+
 
         public DataSet ReadNext(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
 
-            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID > @ProductID ORDER BY ProductID ASC";
+            string comando = "SELECT TOP 1 * FROM Product WHERE Name > @Name ORDER BY Name ASC";
 
             try
             {
                 conn = new SqlConnection(constring);
                 SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
-                sqlAdapter.SelectCommand.Parameters.AddWithValue("@ProductID", en.ProductID);
+                sqlAdapter.SelectCommand.Parameters.AddWithValue("@Name", en.Name);
                 dsProduct = new DataSet();
                 sqlAdapter.Fill(dsProduct);
                 return dsProduct;
@@ -216,13 +234,13 @@ namespace library
             SqlConnection conn = null;
             DataSet dsProduct = null;
 
-            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID < @ProductID ORDER BY ProductID DESC";
+            string comando = "SELECT TOP 1 * FROM Product WHERE Name < @Name ORDER BY Name DESC";
 
             try
             {
                 conn = new SqlConnection(constring);
                 SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
-                sqlAdapter.SelectCommand.Parameters.AddWithValue("@ProductID", en.ProductID);
+                sqlAdapter.SelectCommand.Parameters.AddWithValue("@Name", en.Name);
                 dsProduct = new DataSet();
                 sqlAdapter.Fill(dsProduct);
                 return dsProduct;
@@ -240,6 +258,7 @@ namespace library
                 if (conn != null) conn.Close();
             }
         }
+
 
 
     }
