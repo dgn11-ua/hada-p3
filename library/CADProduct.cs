@@ -52,8 +52,46 @@ namespace library
 
         public bool Update(ENProduct en)
         {
+            SqlConnection conn = null;
 
+            try
+            {
+                conn = new SqlConnection(constring);
+                conn.Open();
+
+                string comando = "UPDATE Products SET name = @Name, code = @Code, amount = @Amount, price = @Price, category = @Category, creationDate = @CreationDate WHERE id = @ID";
+
+                SqlCommand cmd = new SqlCommand(comando, conn);
+
+                cmd.Parameters.AddWithValue("@ID", en.ID);
+                cmd.Parameters.AddWithValue("@Name", en.Name);
+                cmd.Parameters.AddWithValue("@Code", en.Code);
+                cmd.Parameters.AddWithValue("@Amount", en.Amount);
+                cmd.Parameters.AddWithValue("@Price", en.Price);
+                cmd.Parameters.AddWithValue("@Category", en.Category);
+                cmd.Parameters.AddWithValue("@CreationDate", en.CreationDate);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (SqlException sqlex)
+            {
+                throw new CADException("Error updating the product: " + en.Name, sqlex);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
         }
+
 
         public bool Delete(ENProduct en)
         {
@@ -85,15 +123,16 @@ namespace library
 
         }
 
-        public bool Read(ENProduct en)
+        public DataSet Read(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
-            string comando = "Select * from Product where name= " + en.Name;
+            string comando = "Select * from Product where name= @Name";
             try
             {
                 conn = new SqlConnection(constring);
                 SqlDataAdapter sqlAdaptador = new SqlDataAdapter(comando, conn);
+                sqlAdaptador.SelectCommand.Parameters.AddWithValue("@Name", en.Name);
                 dsProduct = new DataSet();
                 sqlAdaptador.Fill(dsProduct);
                 return dsProduct;
@@ -110,8 +149,9 @@ namespace library
             {
                 if (conn != null) conn.Close();
             }
-
         }
+
+
 
         public bool ReadFirst(ENProduct en)
         {
@@ -141,17 +181,18 @@ namespace library
 
         }
 
-        public bool ReadNext(ENProduct en)
+        public DataSet ReadNext(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
 
-            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID > " + en.ProductID + " ORDER BY ProductID ASC";
+            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID > @ProductID ORDER BY ProductID ASC";
 
             try
             {
                 conn = new SqlConnection(constring);
                 SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
+                sqlAdapter.SelectCommand.Parameters.AddWithValue("@ProductID", en.ProductID);
                 dsProduct = new DataSet();
                 sqlAdapter.Fill(dsProduct);
                 return dsProduct;
@@ -170,17 +211,18 @@ namespace library
             }
         }
 
-        public bool ReadPrev(ENProduct en)
+        public DataSet ReadPrev(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
 
-            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID < " + en.ProductID + " ORDER BY ProductID DESC";
+            string comando = "SELECT TOP 1 * FROM Product WHERE ProductID < @ProductID ORDER BY ProductID DESC";
 
             try
             {
                 conn = new SqlConnection(constring);
                 SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
+                sqlAdapter.SelectCommand.Parameters.AddWithValue("@ProductID", en.ProductID);
                 dsProduct = new DataSet();
                 sqlAdapter.Fill(dsProduct);
                 return dsProduct;
@@ -198,6 +240,7 @@ namespace library
                 if (conn != null) conn.Close();
             }
         }
+
 
     }
 }
