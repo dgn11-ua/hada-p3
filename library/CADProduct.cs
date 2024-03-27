@@ -39,7 +39,7 @@ namespace library
         {
             bool done;
             SqlConnection conn = null;
-            String comando = "Insert INTO [dbo].[Products] (id, name, code, amount, price, category, creationDate) VALUES ('" + en.Name + "', '" + en.Code + "', " + en.Amount + "', '" + en.Price + "', '" + en.CreationDate + ")";
+            String comando = "Insert INTO [dbo].[Products] (name, code, amount, price, category, creationDate) VALUES ('"+en.Name + "', '" + en.Code + "', " + en.Amount + "', '" + en.Price + "', '" + en.CreationDate + ")";
             try
             {
                 conn = new SqlConnection(constring);
@@ -81,7 +81,7 @@ namespace library
 
                 SqlCommand cmd = new SqlCommand(comando, conn);
 
-                cmd.Parameters.AddWithValue("@ID", en.ID);
+                //cmd.Parameters.AddWithValue("@ID", en.id);
                 cmd.Parameters.AddWithValue("@Name", en.Name);
                 cmd.Parameters.AddWithValue("@Code", en.Code);
                 cmd.Parameters.AddWithValue("@Amount", en.Amount);
@@ -145,7 +145,7 @@ namespace library
 
         }
 
-        public DataSet Read(ENProduct en)
+        public bool Read(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
@@ -157,7 +157,7 @@ namespace library
                 sqlAdaptador.SelectCommand.Parameters.AddWithValue("@Name", en.Name);
                 dsProduct = new DataSet();
                 sqlAdaptador.Fill(dsProduct);
-                return dsProduct;
+                return true;
             }
             catch (SqlException sqlex)
             {

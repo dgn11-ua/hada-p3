@@ -96,21 +96,21 @@ namespace library
         {
             CADProduct cadproduct = new CADProduct();
 
-            return cadproduct.ReadFirst(this);
+            return true;    //CAMBIAR
         }
 
         public bool ReadNext()
         {
             CADProduct cadproduct = new CADProduct();
 
-            return cadproduct.ReadNext(this);
+            return true; //cadproduct.ReadNext(this);
         }
 
         public bool ReadPrev()
         {
             CADProduct cadproduct = new CADProduct();
 
-            return cadproduct.ReadPrev(this);
+            return true; // cadproduct.ReadPrev(this);
         }
     }
 }

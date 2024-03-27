@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace library
 {
-    class ENCategory
+    public class ENCategory
     {
         private string _name;
         private string Name
@@ -20,12 +20,12 @@ namespace library
             Name = name;
         }
 
-        public bool read()
+        /*public bool read()
         {
             CADCategory aux = new CADCategory();
 
             return aux.read(this);
-        }
+        }*/
 
     }
 }

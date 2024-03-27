@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using library;
 
 namespace proWeb
 {
@@ -19,6 +20,11 @@ namespace proWeb
                 //ListBox1.DataTextField = "Name";
                 ListBox1.DataBind();
             }
+        }
+
+        protected void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

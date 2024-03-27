@@ -8,17 +8,17 @@ using System.Data;
 
 namespace library
 {
-    class CADCategory
+    public class CADCategory
     {
         private string constring;
         public CADCategory()
         {
             constring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\dgn11\source\repos\Git\hada-p3\proWeb\App_Data\Database.mdf;Integrated Security=True";
         }
-        public bool read(ENCategory en) {
+        /*public bool read(ENCategory en) {
            
 
-        }
+        }*/
 
         public List<ENCategory> readAll()
         {
