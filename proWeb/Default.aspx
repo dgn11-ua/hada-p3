@@ -16,5 +16,28 @@
         <p>Price <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox></p>
        
         <p>Creation Date <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox></p>        
+
+        <p>
+            <asp:Button ID="Button1" runat="server" Text="Create" />
+            <span style="margin-right: 10px;"></span>
+
+            <asp:Button ID="Button2" runat="server" Text="Update" />
+            <span style="margin-right: 10px;"></span>
+
+            <asp:Button ID="Button3" runat="server" Text="Delete" />
+            <span style="margin-right: 10px;"></span>
+
+            <asp:Button ID="Button4" runat="server" Text="Read" />
+            <span style="margin-right: 10px;"></span>
+
+            <asp:Button ID="Button5" runat="server" Text="Read first" />
+            <span style="margin-right: 10px;"></span>
+
+            <asp:Button ID="Button6" runat="server" Text="Read Prev" />
+            <span style="margin-right: 10px;"></span>
+
+            <asp:Button ID="Button7" runat="server" Text="Read Next" />
+
+        </p>
     </div>
 </asp:Content>

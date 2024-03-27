@@ -11,7 +11,14 @@ namespace proWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                CADCategory aux = new CADCategory();
 
+                ListBox1.DataSource = aux.readAll();
+                //ListBox1.DataTextField = "Name";
+                ListBox1.DataBind();
+            }
         }
     }
 }
