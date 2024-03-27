@@ -16,9 +16,6 @@ namespace proWeb
             {
                 CADCategory aux = new CADCategory();
 
-                ListBox1.DataSource = aux.readAll();
-                //ListBox1.DataTextField = "Name";
-                ListBox1.DataBind();
             }
         }
 

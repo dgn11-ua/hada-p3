@@ -11,8 +11,8 @@
 
         <p>Amount <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox></p>
 
-        <p>Category <asp:ListBox ID="ListBox1" runat="server" Height="24px" DataSourceID="Database" DataTextField="name" DataValueField="id" OnSelectedIndexChanged="ListBox1_SelectedIndexChanged"></asp:ListBox>
-            <asp:SqlDataSource ID="Database" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT * FROM [Categories]"></asp:SqlDataSource>
+        <p>Category <asp:ListBox ID="ListBox1" runat="server" Height="50px" DataSourceID="Database" DataTextField="name" DataValueField="id" OnSelectedIndexChanged="ListBox1_SelectedIndexChanged"></asp:ListBox>
+            <asp:SqlDataSource ID="Database" runat="server" ConnectionString="<%$ ConnectionStrings:conexion %>" SelectCommand="SELECT * FROM [Categories]"></asp:SqlDataSource>
         </p>        
 
         <p>Price <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox></p>

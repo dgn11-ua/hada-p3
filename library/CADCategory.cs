@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace library
 {
@@ -13,7 +14,7 @@ namespace library
         private string constring;
         public CADCategory()
         {
-            constring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\dgn11\source\repos\Git\hada-p3\proWeb\App_Data\Database.mdf;Integrated Security=True";
+            constring = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
         /*public bool read(ENCategory en) {
            
@@ -24,7 +25,7 @@ namespace library
         {
             string query = "SELECT Nombre FROM Categorias;";
             List<ENCategory> categories = new List<ENCategory>();
-
+            /*
             using (SqlConnection connection = new SqlConnection(constring))
             {
                 SqlCommand command = new SqlCommand(query, connection);
@@ -40,7 +41,7 @@ namespace library
                         categories.Add(categoria);
                     }
                 }
-            }
+            }*/
 
             return categories;
         }

@@ -175,7 +175,7 @@ namespace library
 
 
 
-        public DataSet ReadFirst(ENProduct en)
+        public bool ReadFirst(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
@@ -203,7 +203,7 @@ namespace library
         }
 
 
-        public DataSet ReadNext(ENProduct en)
+        public bool ReadNext(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
@@ -233,7 +233,7 @@ namespace library
             }
         }
 
-        public DataSet ReadPrev(ENProduct en)
+        public bool ReadPrev(ENProduct en)
         {
             SqlConnection conn = null;
             DataSet dsProduct = null;
