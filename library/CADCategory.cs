@@ -16,14 +16,45 @@ namespace library
         {
             constring = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        /*public bool read(ENCategory en) {
-           
+        public bool Read(ENCategory en)
+        {
+            SqlConnection conn = null;
+            string comando = "Select * from Category ;";
+            try
+            {
+                conn = new SqlConnection(constring);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comando, conn);
+                cmd.ExecuteNonQuery();
 
-        }*/
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    dataReader.Close();
+
+                }
+                else
+                {
+                    dataReader.Close();
+                    return false;
+                }
+
+            
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (conn != null) conn.Close();
+            }
+            return false;
+        }
 
         public List<ENCategory> readAll()
         {
-            string query = "SELECT Nombre FROM Categorias;";
+            string query = "SELECT Name FROM Category;";
             List<ENCategory> categories = new List<ENCategory>();
             
             using (SqlConnection connection = new SqlConnection(constring))

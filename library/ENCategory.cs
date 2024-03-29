@@ -20,12 +20,12 @@ namespace library
             Name = name;
         }
 
-        /*public bool read()
+        public bool read()
         {
             CADCategory aux = new CADCategory();
 
             return aux.Read(this);
-        }*/
+        }
 
     }
 }

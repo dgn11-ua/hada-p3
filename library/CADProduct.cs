@@ -52,7 +52,7 @@ namespace library
             catch (SqlException e)
             {
                 done = false;
-                throw new CADException("Error inserting a product: " + en.Name, e);
+                Console.WriteLine("Error inserting a product: " + en.Name, e);
             }
             catch (Exception e)
             {
@@ -85,7 +85,7 @@ namespace library
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error updating the product: " + en.Name, sqlex);
+                Console.WriteLine("Error updating the product: " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
@@ -115,7 +115,7 @@ namespace library
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error deleting a product: " + en.Name, sqlex);
+                Console.WriteLine("Error deleting a product: " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
@@ -162,7 +162,7 @@ namespace library
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error reading a product: " + en.Name, sqlex);
+                Console.WriteLine("Error reading a product: " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
@@ -211,7 +211,7 @@ namespace library
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error reading a product: " + en.Name, sqlex);
+                Console.WriteLine("Error reading a product: " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
@@ -283,7 +283,7 @@ namespace library
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error reading the next product : " + en.Name, sqlex);
+                Console.WriteLine("Error reading the next product : " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
@@ -354,7 +354,7 @@ namespace library
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error reading the next product : " + en.Name, sqlex);
+                Console.WriteLine("Error reading the next product : " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
