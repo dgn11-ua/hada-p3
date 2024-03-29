@@ -25,7 +25,7 @@ namespace library
         {
             string query = "SELECT Nombre FROM Categorias;";
             List<ENCategory> categories = new List<ENCategory>();
-            /*
+            
             using (SqlConnection connection = new SqlConnection(constring))
             {
                 SqlCommand command = new SqlCommand(query, connection);
@@ -41,7 +41,7 @@ namespace library
                         categories.Add(categoria);
                     }
                 }
-            }*/
+            }
 
             return categories;
         }
