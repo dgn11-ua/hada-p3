@@ -143,11 +143,12 @@ namespace library
                 SqlDataReader dataReader = cmd.ExecuteReader();
                 if (dataReader.Read())
                 {
-                    en.Name = dataReader["Name"].ToString();
-                    en.Price = int.Parse(dataReader["Price"].ToString());
-                    en.Code = dataReader["Code"].ToString();
-                    en.Amount = int.Parse(dataReader["Ampount"].ToString());
-                    //en.CreationDate = int.Parse(dataReader["Price"].ToString());
+                    en.SetCode = dataReader["Code"].ToString();
+                    en.SetName = dataReader["Name"].ToString();
+                    en.SetAmount = int.Parse(dataReader["Amount"].ToString());
+                    en.SetPrice = float.Parse(dataReader["Price"].ToString());
+                    en.SetDate = DateTime.Parse(dataReader["CreationDate"].ToString());
+
                     dataReader.Close();
 
 
@@ -180,7 +181,7 @@ namespace library
         {
             SqlConnection conn = null;
             
-            string comando = "SELECT TOP 1 * FROM Product WHERE name = '" + en.Name + "' ORDER BY ProductID";
+            string comando = "SELECT * FROM Product WHERE name = '" + en.Name + "' ORDER BY ProductID";
 
             try
             {
@@ -193,11 +194,11 @@ namespace library
 
                 if (dataReader.Read())
                 {
-                    en.Name = dataReader["Name"].ToString();
-                    en.Price = int.Parse(dataReader["Price"].ToString());
-                    en.Code = dataReader["Code"].ToString();
-                    en.Amount = int.Parse(dataReader["Ampount"].ToString());
-                    //en.CreationDate = float.Parse(dataReader["Price"].ToString());
+                    en.SetCode = dataReader["Code"].ToString();
+                    en.SetName = dataReader["Name"].ToString();
+                    en.SetAmount = int.Parse(dataReader["Amount"].ToString());
+                    en.SetPrice = float.Parse(dataReader["Price"].ToString());
+                    en.SetDate = DateTime.Parse(dataReader["CreationDate"].ToString());
                     dataReader.Close();
 
 
@@ -226,23 +227,63 @@ namespace library
 
         public bool ReadNext(ENProduct en)
         {
+            bool done=false;
+            string firstName = "";
             SqlConnection conn = null;
-            DataSet dsProduct = null;
 
-            string comando = "SELECT TOP 1 * FROM Product WHERE Name = "+en.Name+" ORDER BY Name DESC";
+            string comando = "SELECT * FROM Product WHERE Name = "+en.Name+" ORDER BY Name DESC";
 
             try
             {
                 conn = new SqlConnection(constring);
-                SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
-                sqlAdapter.SelectCommand.Parameters.AddWithValue("@Name", en.Name);
-                dsProduct = new DataSet();
-                sqlAdapter.Fill(dsProduct);
-                return dsProduct;
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comando, conn);
+                cmd.ExecuteNonQuery();
+
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                ENProduct enb = new ENProduct();
+
+                while (dataReader.Read())
+                {
+                    if (done == false)
+                    {
+                        firstName = dataReader["Name"].ToString();
+                        done = true;
+                    }
+                    if (dataReader["Name"].ToString()!= en.SetName)
+                    {
+                        enb.SetCode = dataReader["Code"].ToString();
+                        enb.SetName = dataReader["Name"].ToString();
+                        enb.SetAmount = int.Parse(dataReader["Amount"].ToString());
+                        enb.SetPrice = float.Parse(dataReader["Price"].ToString());
+                        enb.SetDate = DateTime.Parse(dataReader["CreationDate"].ToString());
+                    }
+                    else
+                    {
+                        if(firstName == dataReader["Name"].ToString())
+                        {
+                            en.SetCode = dataReader["Code"].ToString();
+                            en.SetName = dataReader["Name"].ToString();
+                            en.SetAmount = int.Parse(dataReader["Amount"].ToString());
+                            en.SetPrice = float.Parse(dataReader["Price"].ToString());
+                            en.SetDate = DateTime.Parse(dataReader["CreationDate"].ToString());
+                            return false;
+                        }
+                        en.SetCode = enb.SetCode;
+                        en.SetName = enb.SetName;
+                        en.SetAmount = enb.SetAmount;
+                        en.SetPrice = enb.SetPrice;
+                        en.SetDate = enb.SetDate;
+                        return true;
+                    }
+                }
+                dataReader.Close();
+                return false;
+
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error reading the next product after: " + en.Name, sqlex);
+                throw new CADException("Error reading the next product : " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
@@ -252,27 +293,68 @@ namespace library
             {
                 if (conn != null) conn.Close();
             }
+            return false;
         }
 
         public bool ReadPrev(ENProduct en)
         {
+            bool done = false;
+            string firstName = "";
             SqlConnection conn = null;
-            DataSet dsProduct = null;
 
-            string comando = "SELECT TOP 1 * FROM Product WHERE Name < @Name ORDER BY Name DESC";
+            string comando = "SELECT * FROM Product WHERE Name = " + en.Name + " ;";
 
             try
             {
                 conn = new SqlConnection(constring);
-                SqlDataAdapter sqlAdapter = new SqlDataAdapter(comando, conn);
-                sqlAdapter.SelectCommand.Parameters.AddWithValue("@Name", en.Name);
-                dsProduct = new DataSet();
-                sqlAdapter.Fill(dsProduct);
-                return dsProduct;
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comando, conn);
+                cmd.ExecuteNonQuery();
+
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                ENProduct enb = new ENProduct();
+
+                while (dataReader.Read())
+                {
+                    if (done == false)
+                    {
+                        firstName = dataReader["Name"].ToString();
+                        done = true;
+                    }
+                    if (dataReader["Name"].ToString() != en.SetName)
+                    {
+                        enb.SetCode = dataReader["Code"].ToString();
+                        enb.SetName = dataReader["Name"].ToString();
+                        enb.SetAmount = int.Parse(dataReader["Amount"].ToString());
+                        enb.SetPrice = float.Parse(dataReader["Price"].ToString());
+                        enb.SetDate = DateTime.Parse(dataReader["CreationDate"].ToString());
+                    }
+                    else
+                    {
+                        if (firstName == dataReader["Name"].ToString())
+                        {
+                            en.SetCode = dataReader["Code"].ToString();
+                            en.SetName = dataReader["Name"].ToString();
+                            en.SetAmount = int.Parse(dataReader["Amount"].ToString());
+                            en.SetPrice = float.Parse(dataReader["Price"].ToString());
+                            en.SetDate = DateTime.Parse(dataReader["CreationDate"].ToString());
+                            return false;
+                        }
+                        en.SetCode = enb.SetCode;
+                        en.SetName = enb.SetName;
+                        en.SetAmount = enb.SetAmount;
+                        en.SetPrice = enb.SetPrice;
+                        en.SetDate = enb.SetDate;
+                        return true;
+                    }
+                }
+                dataReader.Close();
+                return false;
+
             }
             catch (SqlException sqlex)
             {
-                throw new CADException("Error reading the previous product to: " + en.Name, sqlex);
+                throw new CADException("Error reading the next product : " + en.Name, sqlex);
             }
             catch (Exception ex)
             {
@@ -282,8 +364,8 @@ namespace library
             {
                 if (conn != null) conn.Close();
             }
+            return false;
         }
-
 
 
     }

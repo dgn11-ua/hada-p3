@@ -64,6 +64,17 @@ namespace library
             CreationDate = creationDate;
         }
 
+        public string SetCode { set { Code = value; } get { return Code; } }
+        public string SetName { set { Name = value; } get { return Name; } }
+        public int SetAmount { set { Amount = value; } get { return Amount; } }
+        public float SetPrice { set { Price = value; } get { return Price; } }
+        public DateTime SetDate { set { CreationDate = value; } get { return CreationDate; } }
+
+
+
+
+
+
         public bool Create()
         {
             CADProduct cadproduct = new CADProduct();
@@ -96,21 +107,21 @@ namespace library
         {
             CADProduct cadproduct = new CADProduct();
 
-            return true;    //CAMBIAR
+            return cadproduct.ReadFirst(this);
         }
 
         public bool ReadNext()
         {
             CADProduct cadproduct = new CADProduct();
 
-            return true; //cadproduct.ReadNext(this);
+            return cadproduct.ReadNext(this);
         }
 
         public bool ReadPrev()
         {
             CADProduct cadproduct = new CADProduct();
 
-            return true; // cadproduct.ReadPrev(this);
+            return cadproduct.ReadPrev(this);
         }
     }
 }
