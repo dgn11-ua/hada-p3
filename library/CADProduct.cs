@@ -71,30 +71,17 @@ namespace library
         public bool Update(ENProduct en)
         {
             SqlConnection conn = null;
+            string comando = "UPDATE Products SET name = @Name, code = @Code, amount = @Amount, price = @Price, category = @Category, creationDate = @CreationDate WHERE id = @ID";
+
 
             try
             {
                 conn = new SqlConnection(constring);
                 conn.Open();
-
-                string comando = "UPDATE Products SET name = @Name, code = @Code, amount = @Amount, price = @Price, category = @Category, creationDate = @CreationDate WHERE id = @ID";
-
                 SqlCommand cmd = new SqlCommand(comando, conn);
 
-                //cmd.Parameters.AddWithValue("@ID", en.id);
-                cmd.Parameters.AddWithValue("@Name", en.Name);
-                cmd.Parameters.AddWithValue("@Code", en.Code);
-                cmd.Parameters.AddWithValue("@Amount", en.Amount);
-                cmd.Parameters.AddWithValue("@Price", en.Price);
-                cmd.Parameters.AddWithValue("@Category", en.Category);
-                cmd.Parameters.AddWithValue("@CreationDate", en.CreationDate);
-
-                int rowsAffected = cmd.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                    return true;
-                else
-                    return false;
+                cmd.ExecuteNonQuery();
+                return true;
             }
             catch (SqlException sqlex)
             {
@@ -108,6 +95,7 @@ namespace library
             {
                 if (conn != null) conn.Close();
             }
+            return false;
         }
 
 
@@ -122,12 +110,8 @@ namespace library
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(comando, conn);
 
-                int rowsAffected = cmd.ExecuteNonQuery();
-
-                if (rowsAffected > 0)
-                    return true;
-                else
-                    return false;
+                cmd.ExecuteNonQuery();
+                return true;
             }
             catch (SqlException sqlex)
             {
@@ -135,29 +119,45 @@ namespace library
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
             finally
             {
                 if (conn != null) conn.Close();
             }
+            return false;
 
         }
 
         public bool Read(ENProduct en)
         {
             SqlConnection conn = null;
-            DataSet dsProduct = null;
-            string comando = "Select * from Product where name= @Name";
+            string comando = "Select * from Product where name=" + en.Name + ";";
             try
             {
                 conn = new SqlConnection(constring);
-                SqlDataAdapter sqlAdaptador = new SqlDataAdapter(comando, conn);
-                sqlAdaptador.SelectCommand.Parameters.AddWithValue("@Name", en.Name);
-                dsProduct = new DataSet();
-                sqlAdaptador.Fill(dsProduct);
-                return true;
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comando, conn);
+                cmd.ExecuteNonQuery();
+
+                SqlDataReader dataReader = cmd.ExecuteReader();
+                if (dataReader.Read())
+                {
+                    en.Name = dataReader["Name"].ToString();
+                    en.Price = int.Parse(dataReader["Price"].ToString());
+                    en.Code = dataReader["Code"].ToString();
+                    en.Amount = int.Parse(dataReader["Ampount"].ToString());
+                    //en.CreationDate = int.Parse(dataReader["Price"].ToString());
+                    dataReader.Close();
+
+
+                }
+                else
+                {
+                    dataReader.Close();
+                    return false;
+                }
+
             }
             catch (SqlException sqlex)
             {
@@ -171,6 +171,7 @@ namespace library
             {
                 if (conn != null) conn.Close();
             }
+            return false;
         }
 
 
@@ -178,15 +179,34 @@ namespace library
         public bool ReadFirst(ENProduct en)
         {
             SqlConnection conn = null;
-            DataSet dsProduct = null;
+            
             string comando = "SELECT TOP 1 * FROM Product WHERE name = '" + en.Name + "' ORDER BY ProductID";
+
             try
             {
                 conn = new SqlConnection(constring);
-                SqlDataAdapter sqlAdaptador = new SqlDataAdapter(comando, conn);
-                dsProduct = new DataSet();
-                sqlAdaptador.Fill(dsProduct);
-                return dsProduct;
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comando, conn);
+                cmd.ExecuteNonQuery();
+
+                SqlDataReader dataReader = cmd.ExecuteReader();
+
+                if (dataReader.Read())
+                {
+                    en.Name = dataReader["Name"].ToString();
+                    en.Price = int.Parse(dataReader["Price"].ToString());
+                    en.Code = dataReader["Code"].ToString();
+                    en.Amount = int.Parse(dataReader["Ampount"].ToString());
+                    //en.CreationDate = float.Parse(dataReader["Price"].ToString());
+                    dataReader.Close();
+
+
+                }
+                else
+                {
+                    dataReader.Close();
+                    return false;
+                }
             }
             catch (SqlException sqlex)
             {
@@ -200,6 +220,7 @@ namespace library
             {
                 if (conn != null) conn.Close();
             }
+            return false;
         }
 
 
@@ -208,7 +229,7 @@ namespace library
             SqlConnection conn = null;
             DataSet dsProduct = null;
 
-            string comando = "SELECT TOP 1 * FROM Product WHERE Name > @Name ORDER BY Name ASC";
+            string comando = "SELECT TOP 1 * FROM Product WHERE Name = "+en.Name+" ORDER BY Name DESC";
 
             try
             {
